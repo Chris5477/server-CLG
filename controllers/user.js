@@ -47,5 +47,5 @@ exports.addCard = (req, res, next) => {
 	User.updateOne({_id : req.params.id}, {$push : {cards : card} })
 	.then(() => res.status(201).json({message : "Data added"}))
 	.catch(() => res.status(400).json({message : "Unable to add your data !"})) 
-	next()
+	return;
 };
