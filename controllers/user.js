@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const { json } = require("express/lib/response");
+const jwt = require("jsonwebtoken")
+
 
 exports.createUser = (req, res, next) => {
 	bcrypt
@@ -30,7 +31,10 @@ exports.login = (req, res, next) => {
 					return res.status(400).json({ message: "Password incorrect !" });
 				}
 
-				res.status(200).json({ userId: user.id });
+				res.status(200).json({ 
+					user: user,
+					token: jwt.sign({ userId: user._id }, "RANDOM_KEY_SECRET_APPLICATION_COVERLETTER", { expiresIn: "24h" }), 
+				});
 			});
 		})
 		.catch(() => res.status(500).json({ message: "Error server" }));
