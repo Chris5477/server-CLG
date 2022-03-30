@@ -1,8 +1,8 @@
 const express = require("express");
-const { json } = require("express/lib/response");
 const mongoose = require("mongoose");
 const app = express();
 const userRouter = require("./routes/user");
+
 
 const databaseUrl = process.env.DATABASE_URL || "mongodb://localhost/coverletter";
 
@@ -24,4 +24,5 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/user", userRouter);
+
 module.exports = app;
