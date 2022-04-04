@@ -47,14 +47,23 @@ exports.deleteUser = (req, res, next) => {
 
 exports.refreshData = (req, res, next) => {
 	User.findOne({ _id: req.params.id })
-		.then((user) => res.status(200).json({user}))
+		.then((user) => res.status(200).json({ user }))
 		.catch(() => res.status(400).json({ message: "Unable to get Data" }));
 };
 
 exports.addCard = (req, res, next) => {
 	const card = { ...req.body };
 	User.updateOne({ _id: req.params.id }, { $push: { cards: card } })
-		.then((wxc) => res.status(201).json(wxc))
+		.then((card) => res.status(201).json(card))
 		.catch(() => res.status(400).json({ message: "Unable to add your data !" }));
 	return;
+};
+
+exports.removeCard = (req, res, next) => {
+	const idCard = {...req.body}
+	User.findOne({ _id: req.params.id }).then((user) => {
+		User.updateMany({ _id: user._id }, { $pull: { cards: { _id: idCard } } })
+			.then(() => res.status(200).json({ message: "Card deleted" }))
+			.catch(() => res.status(400).json({ message: "Unable data !" }));
+	});
 };
