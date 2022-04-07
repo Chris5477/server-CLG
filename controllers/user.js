@@ -62,7 +62,7 @@ exports.addCard = (req, res, next) => {
 exports.removeCard = (req, res, next) => {
 	const idCard = {...req.body}
 	User.findOne({ _id: req.params.id }).then((user) => {
-		User.updateMany({ _id: user._id }, { $pull: { cards: { _id: idCard } } })
+		User.updateOne({ _id: user._id }, { $pull: { cards: { _id: idCard } } })
 			.then(() => res.status(200).json({ message: "Card deleted" }))
 			.catch(() => res.status(400).json({ message: "Unable data !" }));
 	});
